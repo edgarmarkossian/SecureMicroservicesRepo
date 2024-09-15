@@ -19,7 +19,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-app.MapControllers(); // Make sure you map the controllers
+app.MapControllers();
 
 SeedDatabase(app);
 
