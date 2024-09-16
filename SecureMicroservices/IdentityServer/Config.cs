@@ -11,8 +11,7 @@ namespace IdentityServer
         public static IEnumerable<Client> Clients =>
            new Client[]
            {
-                   new Client
-                   {
+                   new() {
                         ClientId = "movieClient",
                         AllowedGrantTypes = GrantTypes.ClientCredentials,
                         ClientSecrets =
@@ -21,8 +20,7 @@ namespace IdentityServer
                         },
                         AllowedScopes = { "movieAPI" }
                    },
-                   new Client
-                   {
+                   new() {
                        ClientId = "movies_mvc_client",
                        ClientName = "Movies MVC Web App",
                        AllowedGrantTypes = GrantTypes.Hybrid,
