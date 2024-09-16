@@ -23,6 +23,11 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ClientPolicy", policy => policy.RequireClaim("client_id", "movieClient"));
+});
+
 
 builder.Services.AddControllers();
 
