@@ -42,10 +42,10 @@ namespace IdentityServer
                        {
                            IdentityServerConstants.StandardScopes.OpenId,
                            IdentityServerConstants.StandardScopes.Profile,
-                           //IdentityServerConstants.StandardScopes.Address,
-                           //IdentityServerConstants.StandardScopes.Email,
+                           IdentityServerConstants.StandardScopes.Address,
+                           IdentityServerConstants.StandardScopes.Email,
                            "movieAPI",
- 
+                           "roles"
                        }
                    }
            };

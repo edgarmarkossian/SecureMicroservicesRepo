@@ -17,6 +17,10 @@ namespace Movies.API.Controllers
         {
             _context = context;
         }
+        
+        
+        //TODO implement get, edit, put, delete
+
 
         // GET: api/Movies
         [HttpGet]

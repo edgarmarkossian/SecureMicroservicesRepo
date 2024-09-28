@@ -1,6 +1,8 @@
-﻿using IdentityModel.Client;
+﻿using IdentityModel;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Movies.Client.ApiServices;
 using Movies.Client.HttpHandlers;
@@ -16,23 +18,33 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 })
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
-                {
-                    options.Authority = "https://localhost:5005";
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+{
+    options.Authority = "https://localhost:5005";
 
-                    options.ClientId = "movies_mvc_client";
-                    options.ClientSecret = "secret";
-                    options.ResponseType = "code id_token";
+    options.ClientId = "movies_mvc_client";
+    options.ClientSecret = "secret";
+    options.ResponseType = "code id_token";
 
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
-                    options.Scope.Add("movieAPI");
+    //options.Scope.Add("openid");
+    //options.Scope.Add("profile");
+    options.Scope.Add("address");
+    options.Scope.Add("email");
+    options.Scope.Add("movieAPI");
+    options.Scope.Add("roles");
 
-                    options.SaveTokens = true;
+    options.ClaimActions.MapUniqueJsonKey("role", "role");
 
-                    options.GetClaimsFromUserInfoEndpoint = true;
-                });
+    options.SaveTokens = true;
+    options.GetClaimsFromUserInfoEndpoint = true;
+
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = JwtClaimTypes.GivenName,
+        RoleClaimType = JwtClaimTypes.Role
+    };
+});
 
 builder.Services.AddTransient<AuthenticationDelegatingHandler>();
 
