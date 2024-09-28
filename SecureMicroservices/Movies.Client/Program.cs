@@ -100,3 +100,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+
+//TODO filter the film owner by owner name
