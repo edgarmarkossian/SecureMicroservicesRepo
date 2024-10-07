@@ -24,7 +24,8 @@ namespace Movies.Client.Controllers
         public async Task<IActionResult> Index()
         {
             await LogTokenAndClaims();
-            return View(await _movieApiService.GetMovies());
+            var movies = await _movieApiService.GetMovies();
+            return View(movies);
         }
 
         [Authorize(Roles = "admin")]
@@ -55,20 +56,38 @@ namespace Movies.Client.Controllers
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            return View();
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            //var movie = await _context.Movie
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (movie == null)
-            //{
-            //    return NotFound();
-            //}
+            string idToGet = id.ToString();
 
-            //return View(movie);
+            var movie = await _movieApiService.GetMovieById(idToGet);
+            
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return View(movie);
+        }
+        
+        public async Task<IActionResult> GetMoviesByName(string? name)
+        {
+            if (String.IsNullOrEmpty(name))
+            {
+                return NotFound();
+            }
+
+            var movies = await _movieApiService.GetMoviesByName(name);
+            
+            if (movies == null)
+            {
+                return NotFound();
+            }
+
+            return View(movies);
         }
 
         // GET: Movies/Create

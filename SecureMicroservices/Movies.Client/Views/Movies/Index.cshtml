@@ -9,6 +9,12 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form method="get" asp-controller="Movies" asp-action="GetMoviesByName">
+    <input type="text" name="name" placeholder="Search movies..." />
+    <button type="submit">Find</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -34,7 +40,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -60,6 +66,9 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
+    <table>
+        <!-- Your table for displaying movies goes here -->
+    </table>
 </table>

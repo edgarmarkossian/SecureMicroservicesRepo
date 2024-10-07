@@ -18,20 +18,17 @@ namespace Movies.API.Controllers
             _context = context;
         }
         
-        
-        //TODO implement get, edit, put, delete
-
-
         // GET: api/Movies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovie()
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
-            return await _context.Movie.ToListAsync();
+            var movies = await _context.Movie.ToListAsync();
+            return movies;
         }
 
         // GET: api/Movies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovie(int id)
+        public async Task<ActionResult<Movie>> GetMovieById(int id)
         {
             var movie = await _context.Movie.FindAsync(id);
 
@@ -41,6 +38,19 @@ namespace Movies.API.Controllers
             }
 
             return movie;
+        }
+        
+        [HttpGet("{name}")]
+        public async Task<ActionResult<List<Movie>>> GetMoviesByName(string name)
+        {
+            var movies = await _context.Movie.Where(x =>x.Title.Contains(name)).ToListAsync();
+
+            if (movies == null)
+            {
+                return NotFound();
+            }
+
+            return movies;
         }
 
         // PUT: api/Movies/5
@@ -82,7 +92,7 @@ namespace Movies.API.Controllers
             _context.Movie.Add(movie);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
+            return CreatedAtAction("GetMovieById", new { id = movie.Id }, movie);
         }
 
         // DELETE: api/Movies/5

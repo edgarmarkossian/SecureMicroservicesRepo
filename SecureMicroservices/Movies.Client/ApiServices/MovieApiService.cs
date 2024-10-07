@@ -68,9 +68,28 @@ namespace Movies.Client.ApiServices
             return movieList;
         }
 
-        public Task<Movie> GetMovie(string id)
+        public Task<Movie> GetMovieById(string id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Movie>> GetMoviesByName(string name)
+        {
+            var httpClient = _httpClientFactory.CreateClient("MovieAPIClient");
+
+            var url = string.Format("/movies/{0}", name);
+            
+            var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                url);
+            
+            var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            var movies = JsonConvert.DeserializeObject<List<Movie>>(content);
+            return movies;        
         }
 
         public Task<Movie> CreateMovie(Movie movie)
